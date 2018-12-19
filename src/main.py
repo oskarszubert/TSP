@@ -12,3 +12,8 @@ tab_1 = [0,1,2,3,4,5,6,7,8,0]
 tab_2 = [0,2,6,1,3,8,5,7,4,0]
 
 sd.pmx(tab_1,tab_2)
+
+x = sd.tournament_selection(1)
+
+for i in x:
+    print(i)

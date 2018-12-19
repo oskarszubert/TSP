@@ -1,14 +1,36 @@
 from random import randrange as rand
+
 class Genetic():
 
     def __init__(self):
+        # self.graph = []
+
+        self.graph = [
+        [0, 10, 15, 20],
+        [5, 0, 9, 10],
+        [6, 13, 0, 12],
+        [8, 8, 9, 0]]
+
         self.number_of_iteration = 100
         self.population_size = 10
-        self.number_of_vertices = 10
+
+        self.arena_size = 2 # how many paths is getting part in tournament
+
+        self.mutation_ratio =  1 # percet  
+        self.crossover_ratio = 90 # percet 
+
+        self.number_of_vertices = len(self.graph[0]) # len(graph[0])
         self.population = []
         self.generate_population()
 
-        self.graph = []
+
+    def genetic(self):
+
+        while self.number_of_iteration:
+            self.number_of_iteration -= 1
+
+
+            
 
 
     def swap(self, tab, first_index, second_index):
@@ -42,9 +64,31 @@ class Genetic():
     def tournament_selection(self, number_of_winners):
         winners = []
 
+        population = list(self.population)
         for i in range(number_of_winners):
-            pass
+            arena = []
 
+            for k in range(self.arena_size): # choose self.arena_size paths to tournament
+                random_index = rand(0, len(population) )
+                arena.append( population[random_index] )
+                del population[random_index]
+
+            # choose best path:
+            result = []
+            for path in arena:
+                tmp = []
+                cost = self.get_path_cost(path)
+                tmp.append(cost)
+                tmp.append(path)
+                result.append(tmp)
+
+            result.sort()
+
+            winners.append(result[0][1])
+
+
+            population = list(self.population) # restore population but without prevoius winner 
+            population.remove( winners[-1] )
 
         return winners
 
@@ -100,6 +144,6 @@ class Genetic():
                             if part_1[i] == pmx_map[k][0]:
                                 part_1[i] = pmx_map[k][1]
 
-        parent = part_1[:point_1] + part_2 + part_1[point_1:]
+        parent = [0] + part_1[:point_1] + part_2 + part_1[point_1:] + [0]
 
         return parent
