@@ -14,6 +14,6 @@ tab_2 = [0,2,6,1,3,8,5,7,4,0]
 sd.pmx(tab_1,tab_2)
 
 x = sd.tournament_selection(1)
-
-for i in x:
-    print(i)
+sd.mutation_swap(tab_1)
+# for i in x:
+    # print(i)

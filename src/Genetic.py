@@ -24,13 +24,19 @@ class Genetic():
         self.generate_population()
 
 
+
     def genetic(self):
 
         while self.number_of_iteration:
             self.number_of_iteration -= 1
 
+        # evaluate all paths , remeber global_best_path/ global_best_cost
+        # from tournament choose two paths and PMX // how many another param?
 
-            
+        #try do mutation on every path in population
+
+        #add stop criterion, like- if do not found new best path for n-iteration stop(?)
+
 
 
     def swap(self, tab, first_index, second_index):
@@ -93,10 +99,35 @@ class Genetic():
         return winners
 
 
-    def mutation(self, tab):
-        a, b = rand( 0, self.number_of_vertices - 2 ), rand( 0, self.number_of_vertices - 2 )
-        self.swap(tab,a,b)
-        
+    def mutation_swap(self, path):
+        rand_numer = rand(0,100001) / 1000 # in percent
+
+        if rand_numer <= self.mutation_ratio:
+            path = path[1:-1]
+            a, b = rand( 0, len( path ) - 2 ), rand( 0, len( path ) - 2 )
+            self.swap(path,a,b)
+            path.insert(0,0)
+            path.append(0)
+
+    def mutation_invertion(self, path):
+        rand_numer = rand(0,100001) / 1000 # in percent
+
+        if rand_numer <= self.mutation_ratio:
+            path = path[1:-1]
+            random_range = len(path)
+
+            # choose random subpath bounded by two random points || point_1 < point_2. point_1 != last element
+            point_1 = rand(0, random_range -2 )
+            point_2 = rand(point_1 + 1, random_range - 1)
+
+            subpath = path[point_1:point_2]
+            path = path[0:point_1] + path[point_2:]
+
+            point_3 = rand(0,len(path)) # put our subpath in random place in the rest of path
+            path = path[0:point_3] + subpath + path[point_3:]
+            path.insert(0,0)
+            path.append(0) 
+            
 
     def pmx(self, first, second ): # Partially Matched Crossover
         first_parent = first[1:-1]
