@@ -6,27 +6,50 @@ class Genetic():
     def __init__(self, graph):
         self.graph = graph
         
-        self.number_of_iteration = 1000
+        self.number_of_iteration = 0
         self.number_of_vertices = len(self.graph[0]) # len(graph[0])
 
-        self.population_size = 15
+        self.population_size = 0
 
-        self.arena_size = 5 # how many paths is getting part in tournament
+        self.arena_size = 0 # how many paths is getting part in tournament
 
-        self.mutation_ratio =  20 # percet  
-        self.crossover_ratio = 80 # percet 
+        self.mutation_ratio =  0 # percet  
+        self.crossover_ratio = 0 # percet 
 
-        
         self.parent_population = []
         self.child_population = []
-
-        self.generate_population()
 
         self.global_best_path = []
         self.global_best_cost = sys.maxsize
 
+    def  __repr__(self):
+        return "Genetic TSP object. Minimal cost path: {}. Best path: {}".format(self.global_best_cost, self.global_best_path)
+
+    def set_number_of_iteration(self, number):
+        self.number_of_iteration = number
+    
+    def set_population_size(self, size):
+        self.population_size = size
+
+    def set_arena_size(self, size):
+        self.arena_size = size
+
+    def set_mutation_ratio(self, ratio):
+        self.mutation_ratio = ratio
+
+    def set_crossover_ratio(self, ratio):
+        self.crossover_ratio = ratio
+
+    def set_genetic_properties(self, iter, pop, arena, mutate, cross ):
+        self.set_number_of_iteration(iter)
+        self.set_population_size(pop)
+        self.set_arena_size(arena)
+        self.set_mutation_ratio(mutate)
+        self.set_crossover_ratio(cross)
 
     def genetic(self): # flow of genetic algorithm
+        self.generate_population()
+
         while self.number_of_iteration:
             self.number_of_iteration -= 1
             
@@ -68,8 +91,8 @@ class Genetic():
                 print('{} \u2192 '.format(vertex), end='')
             print(self.global_best_path[0])
 
-
-    def swap(self, tab, first_index, second_index):
+    @staticmethod        
+    def swap( tab, first_index, second_index):
         tab[first_index], tab[second_index] = tab[second_index], tab[first_index]
 
 
@@ -140,7 +163,7 @@ class Genetic():
         if rand_numer <= self.mutation_ratio:
             path = individual[1]
             individual = []
-            path = self.mutation_invertion(path)
+            path = self.mutation_insertion(path)
             # path = self.mutation_swap(path)
             individual.append(self.get_path_cost( path ))
             individual.append( path )
@@ -156,7 +179,8 @@ class Genetic():
 
         return path
 
-    def mutation_invertion(self, path):
+    @staticmethod
+    def mutation_insertion(path):
         path = path[1:-1]
         random_range = len(path)
       

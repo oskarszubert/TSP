@@ -1,10 +1,9 @@
-from Genetic import *
-from GraphFromFile import *
+"""
+Genetic algo for TSP by Oskar Szubert
+"""
 
-filename = 'tsp.txt'
-file = GraphFromFile(filename)
-graph = file.graph
-sd = Genetic(graph)
+from func import *
 
-sd.genetic()
-sd.print()
+if __name__ == '__main__':
+    # main()
+    automatic_test()
