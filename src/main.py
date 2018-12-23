@@ -1,19 +1,10 @@
 from Genetic import *
+from GraphFromFile import *
 
-sd = Genetic()
+filename = 'tsp.txt'
+file = GraphFromFile(filename)
+graph = file.graph
+sd = Genetic(graph)
 
-# x = sd.population
-
-# for i in x:
-#     print(i)
-
-# sd.test_mutation()
-tab_1 = [0,1,2,3,4,5,6,7,8,0]
-tab_2 = [0,2,6,1,3,8,5,7,4,0]
-
-sd.pmx(tab_1,tab_2)
-
-x = sd.tournament_selection(1)
-sd.mutation_swap(tab_1)
-# for i in x:
-    # print(i)
+sd.genetic()
+sd.print()
