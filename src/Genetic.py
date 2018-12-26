@@ -1,7 +1,7 @@
 import sys
 from random import randint as rand
 
-class Genetic():
+class Genetic:
 
     def __init__(self, graph):
         self.graph = graph

@@ -2,8 +2,7 @@
 Genetic algo for TSP by Oskar Szubert
 """
 
-from func import *
+from UserInterface import *
 
 if __name__ == '__main__':
-    # main()
-    automatic_test()
+   ui = UserInterface()

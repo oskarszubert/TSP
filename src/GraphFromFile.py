@@ -42,10 +42,10 @@ class GraphFromFile():
             file.close()
         except FileNotFoundError:
             print("Do not find file as {}".format(filename))
+            sys.exit(-1)
         except Exception as e:
             print("Error while reading graph from file.\n", e)
             sys.exit(-1)
-            return  -1
         return self._graph           
 
     def print(self):

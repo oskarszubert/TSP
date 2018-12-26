@@ -20,10 +20,6 @@ class GraphFromRand():
         return self._graph
 
     def create_graph(self, max_value):
-            # if self._number_of_vertex > 20:
-            #     print('To much number of vertexes change your number in to 20')
-            #     self._number_of_vertex = 20
-
             for i in range(self._number_of_vertex):
                 tmp_list = []
                 for k in range(self._number_of_vertex):
