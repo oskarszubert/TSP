@@ -1,6 +1,6 @@
 from random import randint as rand
 
-class GraphFromRand():
+class GraphFromRand:
 
     def __init__(self, number_of_vertex, max_value):
         self._number_of_vertex = number_of_vertex
@@ -28,21 +28,3 @@ class GraphFromRand():
                     else:
                         tmp_list.append(rand(0,max_value))
                 self._graph.append(tmp_list)
-
-    def print(self):
-        print("Number of vertexes: {}".format(self._number_of_vertex))
-        print('    ', end='')
-        for i in range(self._number_of_vertex ):
-            print('{0:5d}'.format(i),end='')
-        print('\n    ', end='')
-        for i in range(self._number_of_vertex ):
-            print(5*'-',end='')
-        print()            
-
-        i = 0
-        for row in self._graph: 
-            print('{0:2d} |'.format(i), end='')
-            i += 1
-            for cell in row:
-                print('{0:5d}'.format(cell), end='')
-            print('')

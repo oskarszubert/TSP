@@ -22,8 +22,11 @@ class Genetic:
         self.global_best_path = []
         self.global_best_cost = sys.maxsize
 
-    def  __repr__(self):
+    def  __str__(self):
         return "Genetic TSP object. Minimal cost path: {}. Best path: {}".format(self.global_best_cost, self.global_best_path)
+
+    def __repr__(self):
+        return str(self.global_best_cost)  
 
     def set_number_of_iteration(self, number):
         self.number_of_iteration = number

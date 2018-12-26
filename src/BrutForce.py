@@ -1,7 +1,6 @@
 import itertools
 
-class BrutForce():
-
+class BrutForce:
     def __init__(self):
         self.best_cost = -1
         self.best_paths = []

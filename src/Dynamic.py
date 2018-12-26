@@ -1,5 +1,4 @@
-class DynamicTsp():
-
+class DynamicTsp:
     def __init__(self):
         self.best_cost = -1
         self.best_path = []

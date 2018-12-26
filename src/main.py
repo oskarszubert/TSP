@@ -1,8 +1,11 @@
 """
-Genetic algo for TSP by Oskar Szubert
+TSP by Oskar Szubert
 """
-
+import sys
 from UserInterface import *
 
 if __name__ == '__main__':
-   ui = UserInterface()
+    if len(sys.argv) == 1:
+        ui = UserInterface(1)
+    else:
+        ui = UserInterface( int(sys.argv[1]) )

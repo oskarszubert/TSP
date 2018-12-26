@@ -10,17 +10,10 @@ from Dynamic import *
 from TabuSearch import *
 from Genetic import *
 
-class UserInterface(object):
-
-    def __init__(self):
-
-        # x = input("put table here")
-        # x = x.split(" ")
-        # while '' in x:
-        #     x.remove('')
-        # print(x)
+class UserInterface:
+    def __init__(self, n_number):
+        self.n_tests = n_number
         self.hue()
-
 
     @staticmethod
     def prepare_screen():
@@ -29,53 +22,54 @@ class UserInterface(object):
 
     def hue(self):
         self.prepare_screen()
-        x = int(input('Choose what you want to do: \
-            \n\t[ 1 ] Solve TSP with specified algorithm \
-            \n\t[ 2 ] Generate random graph \
-            \n\t------------------------------- \
-            \n\t[ 0 ] Exit \
-            \nYour choice: '))
+        batch = self.input_method()
+        result_filename = self.save_result_as()
+        algo_trigger = self.choose_algorithm(result_filename, batch)
 
-        if x == 0:
-            sys.exit()
-        if x == 1:
-            batch = self.input_method()
-            result_filename = self.save_result_as()
-            algo_trigger = self.choose_algorithm(result_filename, batch)
-
-        if x == 2:
-            pass 
 
     def input_method(self):
             self.prepare_screen()
-            input_method = int(input('------------Choose input method: \
-            \n\t[ 1 ] From single file \
-            \n\t[ 2 ] From all file in specific dir \
-            \nYour choice: '))
-            # \n\t[ 3 ] Generate random graph \
+            try:
+                 input_method = int(input('------------Choose input method: \
+                \n\t[ 1 ] From single file \
+                \n\t[ 2 ] From all file in specific dir \
+                \n\t[ 3 ] Generate random graph \
+                \n\t ------------------------------- \
+                \n\t[ 0 ] Exit \
+                \nYour choice: '))
 
-            while not (input_method >= 1 and input_method <= 2 ):
+            except Exception:
+                print('*** Something went wrong! ***')
+                sys.exit(-1)         
+
+            while not (input_method >= 0 and input_method <= 3 ):
                 input_method = int(input('Wrong choice try again: '))
-            
+
+            if input_method == 0:
+                sys.exit()
             if input_method == 1:
                 batch = self.single_file()
             if input_method == 2:
                 batch = self.multiple_file()
-            # if input_method == 3:
-                # batch = self.generate_graph()
+            if input_method == 3:
+                batch = self.generate_graph()
 
             return batch
 
     def choose_algorithm(self, result_filename, batch):
         os.system('cls' if os.name == 'nt' else 'clear')
-        algo_trigger = int(input('------------Choose method to solve TSP problem: \
-            \n\t [ 1 ] Brutforce \
-            \n\t [ 2 ] Dynamic programming \
-            \n\t [ 3 ] Tabu Search \
-            \n\t [ 4 ] Genetic Algorithm \
-            \n\t ------------------------------- \
-            \n\t [ 0 ] Exit \
-            \nYour choice: '))
+        try:
+            algo_trigger = int(input('------------Choose method to solve TSP problem: \
+                \n\t [ 1 ] Brutforce \
+                \n\t [ 2 ] Dynamic programming \
+                \n\t [ 3 ] Tabu Search \
+                \n\t [ 4 ] Genetic Algorithm \
+                \n\t ------------------------------- \
+                \n\t [ 0 ] Exit \
+                \nYour choice: '))
+        except Exception:
+            print('*** Something went wrong! ***')
+            sys.exit(-1)  
 
         while not (algo_trigger >= 0 and algo_trigger <= 4):
             algo_trigger = int(input('Wrong choice try again: '))
@@ -119,8 +113,8 @@ class UserInterface(object):
             bf.print()
             print('Time = {0:8f} [sec] '.format( time.result))
             
-            time_as_str =  '{0:7f}'.format(time.result)
-            self.save_as_csv(result_filename, time.result, bf.best_cost, bf.best_paths)
+            time_as_str = '{0:7f}'.format(time.result)
+            self.save_as_csv(result_filename, time_as_str, bf.best_cost, bf.best_paths)
 
             del time.result
 
@@ -141,7 +135,7 @@ class UserInterface(object):
             print('Time = {0:7f} [sec] '.format( time.result))
 
             time_as_str =  '{0:7f}'.format(time.result)
-            self.save_as_csv(result_filename, time.result, dp.best_cost, dp.best_path)
+            self.save_as_csv(result_filename, time_as_str, dp.best_cost, dp.best_path)
             del time.result
 
     @staticmethod
@@ -165,13 +159,16 @@ class UserInterface(object):
         return tab
 
     def tabu_algo(self, batch, result_filename):
-        print('***NOTE: if you want to test more than value of parameter type them and seperate with spacebar\n\
+        print('***Note: if you want to test more than value of parameter type them and seperate with spacebar\n\
             like: 10 20 30 . And press Enter to accept.***\n')
-        iteration = input('Type number of iteration: ')
-        cadency = input('Type length of TABU LIST  greater than 0: ')
-        diversification_number = input('To ACTIVATE diversification type number greater than 0: ')
-        aspiration_ratio = input('To ACTIVATE aspiratio type a decimal fraction in the range of [0-1]: ')
-
+        try:
+            iteration = input('Type number of iteration: ')
+            cadency = input('Type length of TABU LIST  greater than 0: ')
+            diversification_number = input('To ACTIVATE diversification type number greater than 0: ')
+            aspiration_ratio = input('To ACTIVATE aspiratio type a decimal fraction in the range of [0-1]: ')
+        except Exception:
+            print('*** Something went wrong! ***')
+            sys.exit(-1)  
 
         iteration = self.create_int_list(iteration)
         cadency = self.create_int_list(cadency)
@@ -179,8 +176,8 @@ class UserInterface(object):
         aspiration_ratio = self.create_float_list(aspiration_ratio)
 
         time = Time()
-
-        self.csv_title(result_filename, 'Iteration', 'Cadency', 'Diversification', 'Aspiratio' )
+        
+        self.csv_title(result_filename, 'Iteration', 'Cadency', 'Diversification', 'Aspiratio', 'Type')
         for graph in batch:
             print('\n-----------------------------------------------------------')
             self.print_graph(graph)
@@ -189,18 +186,45 @@ class UserInterface(object):
                 for cad in cadency:
                     for diver in  diversification_number:
                         for asp in aspiration_ratio:
-                            tabu = TabuSearch(graph)
-                            tabu.set_tabu_properties(iters, cad, diver, asp)
-                            time.start()
-                            tabu.tabu()
-                            time.stop()
                             
-                            print('\n-----------------------------------------------------------')
-                            tabu.print()
+                            result_tabu = []
+                            time_tabu = []
+                            time_avg = 0
+                            cost_avg = 0
+                            for test in range(self.n_tests):
+                                tmp_tab = []
+                                tabu = TabuSearch(graph)
+                                tabu.set_tabu_properties(iters, cad, diver, asp)
+                                time.start()
+                                tabu.tabu()
+                                time.stop()
+                                
+                                time_avg += time.result
+                                cost_avg += tabu.global_best_cost
 
-                            print('Time = {0:8f} [sec]'.format( time.result))
+                                tmp_tab.append(tabu)
+                                tmp_tab.append(time.result)
+                                result_tabu.append(tmp_tab) # in this list signle elements is: [tabu, time]
+                                del time.result
+
+                            tabu = result_tabu[0][0]
+                            global_time = result_tabu[0][1]
+                            global_cost = tabu.global_best_cost 
+                            for tabu_solution in result_tabu:
+                                tmp_cost = int(repr( tabu_solution[0] ))
+                                if tmp_cost < global_cost:
+                                    tabu = tabu_solution[0]
+                                    global_cost = tmp_cost
+                                    global_time = tabu_solution[1]
+                            
+                            time_avg /= self.n_tests
+                            cost_avg /= self.n_tests
+                               
+                            tabu.print()
+                            print('Time = {0:7f} [sec]'.format( global_time))
                             print('Iteration: {}. Cadency: {}. Diversification: {}. Aspiratio: {}'.format(iters, cad, diver, asp ))
-                            time_as_str =  '{0:7f}'.format(time.result)
+                            time_as_str =  '{0:7f}'.format(global_time)
+                            time_as_str_avg =  '{0:7f}'.format(time_avg)
                             self.save_as_csv(result_filename,
                                             len(graph[0]),
                                             time_as_str, 
@@ -209,9 +233,19 @@ class UserInterface(object):
                                             iters,
                                             cad,
                                             diver,
-                                            asp)
-
-                            del time.result
+                                            asp,
+                                            'best found')
+                            if self.n_tests > 1:
+                                self.save_as_csv(result_filename,
+                                                len(graph[0]),
+                                                time_as_str_avg, 
+                                                cost_avg,
+                                                '-',
+                                                iters,
+                                                cad,
+                                                diver,
+                                                asp,
+                                                'avg')
 
     def genetic_algo(self, batch, result_filename):
         print('***NOTE: if you want to test more than value of parameter type them and seperate with spacebar\n\
@@ -223,15 +257,20 @@ class UserInterface(object):
         muatation_ratio = input('To ACTIVATE muatation type percent [0-100]  ')  
         crossover_ratio = input('To ACTIVATE crossover type percent [0-100]  ')
 
-        iteration = self.create_int_list(iteration)
-        population_size = self.create_int_list(population_size)
-        arena_size = self.create_int_list(arena_size)
-        muatation_ratio = self.create_float_list(muatation_ratio)
-        crossover_ratio = self.create_float_list(crossover_ratio)
+        try:
+            iteration = self.create_int_list(iteration)
+            population_size = self.create_int_list(population_size)
+            arena_size = self.create_int_list(arena_size)
+            muatation_ratio = self.create_float_list(muatation_ratio)
+            crossover_ratio = self.create_float_list(crossover_ratio)
+
+        except Exception:
+            print('*** Something went wrong! ***')
+            sys.exit(-1)  
 
         time = Time()
 
-        self.csv_title(result_filename, 'Iteration', 'Population size', 'Arena size', 'Muatation', 'Crossover')
+        self.csv_title(result_filename, 'Iteration', 'Population size', 'Arena size', 'Muatation', 'Crossover', 'Type')
         for graph in batch:
             self.print_graph(graph) 
             for iters in iteration:
@@ -239,18 +278,45 @@ class UserInterface(object):
                     for arena in  arena_size:
                         for mut in muatation_ratio:
                             for cros in crossover_ratio:
-                                genetic = Genetic(graph)
-                                genetic.set_genetic_properties(iters, pop, arena, mut, cros)
-                                time.start()
-                                genetic.genetic()
-                                time.stop()
-                                
+                                result_genetic = []
+                                time_tabu = []
+                                time_avg = 0
+                                cost_avg = 0
+                                for test in range(self.n_tests):
+                                    tmp_tab = []
+                                    genetic = Genetic(graph)
+                                    genetic.set_genetic_properties(iters, pop, arena, mut, cros)
+                                    time.start()
+                                    genetic.genetic()
+                                    time.stop()
+                                    
+                                    time_avg += time.result
+                                    cost_avg += genetic.global_best_cost
+                                    
+                                    tmp_tab.append(genetic)
+                                    tmp_tab.append(time.result)
+                                    result_genetic.append(tmp_tab) # in this list signle elements is: [tabu, time]
+
+                                    del time.result
+
+                                genetic = result_genetic[0][0]
+                                global_time = result_genetic[0][1]
+                                global_cost = genetic.global_best_cost 
+                                for genetic_solution in result_genetic:
+                                    tmp_cost = int(repr( genetic_solution[0] ))
+                                    if tmp_cost < global_cost:
+                                        genetic = genetic_solution[0]
+                                        global_cost = tmp_cost
+                                        global_time = genetic_solution[1]
+                                time_avg /= self.n_tests
+                                cost_avg /= self.n_tests
                                 print('\n-----------------------------------------------------------')
                                 genetic.print()
 
-                                print('Time = {0:8f} [sec]'.format( time.result))
+                                print('Time = {0:7f} [sec]'.format( global_time))
                                 print('Iteration: {}. Population size: {}. Arena size: {}. Muatation: {}.  Crossover: {} '.format(iters, pop, arena, mut, cros ))
-                                time_as_str =  '{0:7f}'.format(time.result)
+                                time_as_str =  '{0:7f}'.format(global_time)
+                                time_as_str_avg =  '{0:7f}'.format(time_avg)
                                 self.save_as_csv(result_filename,
                                                 len(graph[0]),
                                                 time_as_str, 
@@ -260,9 +326,20 @@ class UserInterface(object):
                                                 pop, 
                                                 arena, 
                                                 mut, 
-                                                cros)
-
-                                del time.result
+                                                cros,
+                                                'best found')
+                                if self.n_tests > 1:
+                                    self.save_as_csv(result_filename,
+                                                    len(graph[0]),
+                                                    time_as_str_avg, 
+                                                    cost_avg,
+                                                    '-',
+                                                    iters,
+                                                    pop, 
+                                                    arena, 
+                                                    mut, 
+                                                    cros,
+                                                    'avg')
 
     @staticmethod
     def csv_title(*args): # asume that args[0] is filename
@@ -323,11 +400,15 @@ class UserInterface(object):
 
     def generate_graph(self):
         batch = []
-        number_of_vertex = int(input('Input NUMBER OF VERTEXES in graph: '))
-        max_value = int(input('Input NUMBER OF MAX VALUE of one connection between two vertexes: '))
-        print('Input HOW MANY GRAPHS that you want to generate: \n***Note: if INPUT >= 2 program will generate graphs with {}, {} ... number of vertexes***'.format(number_of_vertex, number_of_vertex +1))
-        num_of_graphs = int(input('Numver of graphs: '))
-
+        try:
+            dir_name = input('Input directory name where do you want to save your graph(s): ')
+            number_of_vertex = int(input('Input NUMBER OF VERTEXES in graph: '))
+            max_value = int(input('Input NUMBER OF MAX VALUE of one connection between two vertexes: '))
+            print('Input HOW MANY GRAPHS that you want to generate: \n***Note: if INPUT >= 2 program will generate graphs with {}, {} ... number of vertexes***'.format(number_of_vertex, number_of_vertex +1))
+            num_of_graphs = int(input('Number of graphs: '))
+        except Exception:
+            print('*** Something went wrong! ***')
+            sys.exit(-1)  
 
         if num_of_graphs > 1:
             print('Gererating graphs with number of vertex: {} to {}'.format(number_of_vertex, number_of_vertex + num_of_graphs - 1))
@@ -338,13 +419,33 @@ class UserInterface(object):
             graph = GraphFromRand(number_of_vertex, max_value)
             batch.append(graph.graph)
 
-        return batch 
+        self.save_graph_to_file(dir_name, batch)
+
+        return batch
+
+    @staticmethod
+    def save_graph_to_file(dir_name, batch):
+        if not os.path.exists(dir_name):
+            os.makedirs(dir_name)
+        
+        for graph in batch:
+            graph_filename = dir_name + '/tsp_' + str(len(graph)) + '.txt'
+            file = open(graph_filename, 'w')
+
+            file.write(str(len(graph[0])) + '\n')
+
+            for row in graph:
+                for cell in row:
+                    file.write(str(cell) + ' ')
+                file.write('\n')
+
+            file.close()
 
     @staticmethod
     def print_graph(graph):
         number_of_vertex = len(graph[0])
-        # if number_of_vertex < 20:
-        #     return
+        if number_of_vertex > 20:
+            return
 
         print("Number of vertexes: {}".format(number_of_vertex))
         print('    ', end='')

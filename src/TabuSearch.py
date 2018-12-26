@@ -21,11 +21,22 @@ class TabuSearch(object):
         self.active_aspiration = False
         self.aspiration_ratio = 0.9 # default ratio in percent,by method change by set_aspiration_ratio()
 
+    def __str__(self):
+        return "Tabu Seach object. Minimal cost path: {}. Best path: {}".format(self.global_best_cost, self.global_best_path)
+    
     def __repr__(self):
-        return "BrutTabuSearchForce object. Minimal cost path: {}. Best path: {}".format(self.global_best_cost, self.global_best_path)
-
+        return str(self.global_best_cost)  
+    
     def print(self):
-        print(" Minimal cost path: {}. Best path: {}".format(self.global_best_cost, self.global_best_path) )
+        if len(self.global_best_path) == 0:
+            print('Do not found best path yet')
+        else: 
+            print('Minimal cost path: {}. \nBest path with Tabu Seach for TSP: '.format(self.global_best_cost))
+            print("\tPath: ",end = '')
+            for vertex in self.global_best_path[:-1]:
+                print('{} \u2192 '.format(vertex), end='')
+            print(self.global_best_path[0])
+
 
     def set_of_iteration(self, number):
         if number <= 0:
