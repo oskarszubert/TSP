@@ -1,7 +1,6 @@
 from random import randint as rand
 
 class GraphFromRand:
-
     def __init__(self, number_of_vertex, max_value):
         self._number_of_vertex = number_of_vertex
         self._graph = []

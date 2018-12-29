@@ -1,7 +1,6 @@
 import sys
 
-class GraphFromFile():
-
+class GraphFromFile:
     def __init__(self, filename):
         self._number_of_vertex = -1
         self._graph = []

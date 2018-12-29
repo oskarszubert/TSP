@@ -1,8 +1,7 @@
 import sys
 from random import shuffle
 
-class TabuSearch(object):
-
+class TabuSearch:
     def __init__(self, graph):
         self.graph = graph
         self.number_of_vertices = len(self.graph[0])
@@ -11,11 +10,11 @@ class TabuSearch(object):
         self.global_best_path = self.lenny_random_path(self.number_of_vertices)
         self.global_best_cost = self.get_path_cost(self.global_best_path)
         
-        self.number_of_iteration = 300
-        self.cadency = 5
+        self.number_of_iteration = 500
+        self.cadency = 3  * self.number_of_vertices
 
         self.active_diversification = False
-        self.diversification_number = 30 # default number, change by method set_diversification_number()
+        self.diversification_number = 3  * self.number_of_vertices # default number, change by method set_diversification_number()
         self.diversification_counter = 0
 
         self.active_aspiration = False

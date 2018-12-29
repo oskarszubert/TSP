@@ -160,7 +160,7 @@ class UserInterface:
 
     def tabu_algo(self, batch, result_filename):
         print('***Note: if you want to test more than value of parameter type them and seperate with spacebar\n\
-            like: 10 20 30 . And press Enter to accept.***\n')
+            like: 10 20 30 . And press Enter to accept.\n Type \'-1\' to use default value of parameter.***\n')
         try:
             iteration = input('Type number of iteration: ')
             cadency = input('Type length of TABU LIST  greater than 0: ')
@@ -194,6 +194,14 @@ class UserInterface:
                             for test in range(self.n_tests):
                                 tmp_tab = []
                                 tabu = TabuSearch(graph)
+                                if iters == -1:
+                                    iters = tabu.number_of_iteration
+                                if cad == -1:
+                                    cad = tabu.population_size
+                                if diver == -1:
+                                    diver = tabu.mutation_ratio
+                                if asp == -1:
+                                    asp = tabu.crossover_ratio
                                 tabu.set_tabu_properties(iters, cad, diver, asp)
                                 time.start()
                                 tabu.tabu()
@@ -249,12 +257,12 @@ class UserInterface:
 
     def genetic_algo(self, batch, result_filename):
         print('***NOTE: if you want to test more than value of parameter type them and seperate with spacebar\n\
-            like: 10 20 30 . And press Enter to accept.***\n')
+            like: 10 20 30 . And press Enter to accept.\n Type \'-1\' to use default value of parameter.***\n')
 
         iteration = input('Type number of iteration: ')
         population_size = input('Type population size greater than 0: ')
         arena_size = input('Type arena size greater than 0: ')
-        muatation_ratio = input('To ACTIVATE muatation type percent [0-100]  ')  
+        muatation_ratio = input('To ACTIVATE mutation type percent [0-100]  ')  
         crossover_ratio = input('To ACTIVATE crossover type percent [0-100]  ')
 
         try:
@@ -285,7 +293,19 @@ class UserInterface:
                                 for test in range(self.n_tests):
                                     tmp_tab = []
                                     genetic = Genetic(graph)
+                                    if iters == -1:
+                                        iters = genetic.number_of_iteration
+                                    if pop == -1:
+                                        pop = genetic.population_size
+                                    if arena == -1:
+                                        arena = int(pop * 0.3)
+                                    if mut == -1:
+                                        mut = genetic.mutation_ratio
+                                    if cros == -1:
+                                        cros = genetic.crossover_ratio
+
                                     genetic.set_genetic_properties(iters, pop, arena, mut, cros)
+
                                     time.start()
                                     genetic.genetic()
                                     time.stop()
@@ -314,7 +334,7 @@ class UserInterface:
                                 genetic.print()
 
                                 print('Time = {0:7f} [sec]'.format( global_time))
-                                print('Iteration: {}. Population size: {}. Arena size: {}. Muatation: {}.  Crossover: {} '.format(iters, pop, arena, mut, cros ))
+                                print('Iteration: {}. Population size: {}. Arena size: {}. Mutation: {}.  Crossover: {} '.format(iters, pop, arena, mut, cros ))
                                 time_as_str =  '{0:7f}'.format(global_time)
                                 time_as_str_avg =  '{0:7f}'.format(time_avg)
                                 self.save_as_csv(result_filename,
@@ -365,7 +385,12 @@ class UserInterface:
     @staticmethod    
     def single_file():
         batch = []
-        filename = input('Enter filename in your local dir: ')
+        try:
+            filename = input('Enter filename in your local dir: ')
+        except Exception:
+            print('*** Something went wrong! ***')
+            sys.exit(-1)
+
         file = GraphFromFile(filename)
         batch.append(file.graph)
         return batch
@@ -380,12 +405,18 @@ class UserInterface:
     @staticmethod
     def multiple_file():
         batch = []
-        dir_name =input("Enter dir name: ") + '/'
+        try:
+            dir_name =input("Enter dir name: ") + '/'
+        except Exception:
+            print('*** Something went wrong! ***')
+            sys.exit(-1)  
 
         for filename in os.listdir(dir_name):
             file = GraphFromFile(dir_name + filename)
             graph = file.graph
             batch.append(graph)
+
+        return batch
 
     @staticmethod
     def multiple_file_remote(dir_name):
@@ -397,7 +428,7 @@ class UserInterface:
             batch.append(graph)
 
         return batch
-
+    
     def generate_graph(self):
         batch = []
         try:

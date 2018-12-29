@@ -2,19 +2,18 @@ import sys
 from random import randint as rand
 
 class Genetic:
-
     def __init__(self, graph):
         self.graph = graph
         
-        self.number_of_iteration = 0
+        self.number_of_iteration = 100
         self.number_of_vertices = len(self.graph[0]) # len(graph[0])
 
-        self.population_size = 0
+        self.population_size = 10 * self.number_of_vertices
 
-        self.arena_size = 0 # how many paths is getting part in tournament
+        self.arena_size = int(0.3 * self.population_size) # how many paths is getting part in tournament
 
-        self.mutation_ratio =  0 # percet  
-        self.crossover_ratio = 0 # percet 
+        self.mutation_ratio =  5 # percet  
+        self.crossover_ratio = 90 # percet 
 
         self.parent_population = []
         self.child_population = []
@@ -43,8 +42,8 @@ class Genetic:
     def set_crossover_ratio(self, ratio):
         self.crossover_ratio = ratio
 
-    def set_genetic_properties(self, iter, pop, arena, mutate, cross ):
-        self.set_number_of_iteration(iter)
+    def set_genetic_properties(self, iters, pop, arena, mutate, cross ):
+        self.set_number_of_iteration(iters)
         self.set_population_size(pop)
         self.set_arena_size(arena)
         self.set_mutation_ratio(mutate)

@@ -1,6 +1,6 @@
 import time
 
-class Time():
+class Time:
     def __init__(self):
         self._start = 0
         self._stop = 0

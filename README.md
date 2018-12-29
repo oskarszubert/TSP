@@ -21,5 +21,5 @@ To use that run script with n-times number as command line arguments:  `go.sh 20
 Result can be saved as `*.csv'` file which contains: cost, time, path, all params used
 Results will be savd for current best path and average. 
 
-Author: `*Oskar Szubert*` \
-`*Python3.7*` 
+Author: `Oskar Szubert` \
+`Python3.6.5` 
