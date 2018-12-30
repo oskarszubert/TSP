@@ -179,7 +179,6 @@ class UserInterface:
         
         self.csv_title(result_filename, 'Iteration', 'Cadency', 'Diversification', 'Aspiratio', 'Type')
         for graph in batch:
-            print('\n-----------------------------------------------------------')
             self.print_graph(graph)
             
             for iters in iteration:
@@ -197,11 +196,11 @@ class UserInterface:
                                 if iters == -1:
                                     iters = tabu.number_of_iteration
                                 if cad == -1:
-                                    cad = tabu.population_size
+                                    cad = tabu.cadency
                                 if diver == -1:
-                                    diver = tabu.mutation_ratio
+                                    diver = tabu.diversification_number
                                 if asp == -1:
-                                    asp = tabu.crossover_ratio
+                                    asp = tabu.aspiration_ratio
                                 tabu.set_tabu_properties(iters, cad, diver, asp)
                                 time.start()
                                 tabu.tabu()
@@ -227,7 +226,7 @@ class UserInterface:
                             
                             time_avg /= self.n_tests
                             cost_avg /= self.n_tests
-                               
+                            print('\n-----------------------------------------------------------')
                             tabu.print()
                             print('Time = {0:7f} [sec]'.format( global_time))
                             print('Iteration: {}. Cadency: {}. Diversification: {}. Aspiratio: {}'.format(iters, cad, diver, asp ))
