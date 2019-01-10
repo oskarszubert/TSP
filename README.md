@@ -11,6 +11,7 @@
 	- Tournament selection
 	- Crossover: PMX
 	- Mutation: Insertion/ Swap
+	- Elitism
 
 ## Run program:
 To run program run script `go.sh`. 

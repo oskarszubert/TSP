@@ -21,6 +21,9 @@ class Genetic:
         self.global_best_path = []
         self.global_best_cost = sys.maxsize
 
+        self.elitism_ratio = 0.1
+        self.elitism_number = int(self.elitism_ratio * self.population_size)
+
     def  __str__(self):
         return "Genetic TSP object. Minimal cost path: {}. Best path: {}".format(self.global_best_cost, self.global_best_path)
 
@@ -56,6 +59,7 @@ class Genetic:
             self.number_of_iteration -= 1
             
             self.choose_best_path()
+            self.elitism()
 
             while self.parent_population :
 
@@ -81,8 +85,18 @@ class Genetic:
         potencial_best = self.parent_population[0] # python zen
         if potencial_best[0] < self.global_best_cost:
             self.global_best_cost = potencial_best[0]
-            self.global_best_path = potencial_best[1] 
+            self.global_best_path = potencial_best[1]
 
+    def elitism(self):
+        self.parent_population.sort()
+        for path in self.parent_population[:self.elitism_number]:
+            self.child_population.append(path)
+            self.parent_population.remove(path)
+
+        for path in self.parent_population[-self.elitism_number:]:
+            self.child_population.append(path)
+            self.parent_population.remove(path)
+            
     def print(self):
         if len(self.global_best_path) == 0:
             print('Do not found best path yet')
