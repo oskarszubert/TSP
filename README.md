@@ -19,7 +19,7 @@ Becouse some of algorithms are based on random choices, you can run n-times and 
 To use that run script with n-times number as command line arguments:  `go.sh 20`.
 
 ## Results:
-Result can be saved as `*.csv'` file which contains: cost, time, path, all params used
+Result can be saved as `*.csv` file which contains: cost, time, path, all params used
 Results will be savd for current best path and average. 
 
 Author: `Oskar Szubert` \
